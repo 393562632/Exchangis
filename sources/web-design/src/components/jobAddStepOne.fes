@@ -370,7 +370,7 @@ export default {
             this.addData.type = SOURCETYPE.HIVE;
             this.FesFesx.set('firstIsSelectRecord', 'record');
         } else {
-            this.editorAction(this.editData);
+           this.editorAction(this.editData);
         }
     },
     methods: {
@@ -543,7 +543,8 @@ export default {
                     timeout: '60000'
                 }).then(rst => {
                     this.table_loading = false;
-                    this.oracleValue.tables = JSON.stringify(rst) === '{}' ? [] : rst;
+                    const tables = this.editData ? (this.editData.config.dataSrcParams.table || []) : [];
+                    this.oracleValue.tables = JSON.stringify(rst) === '{}' ? [] : [...tables, ...rst];
                 }).catch(() => this.table_loading = false);
             }
         },
