@@ -543,8 +543,20 @@ export default {
                     timeout: '60000'
                 }).then(rst => {
                     this.table_loading = false;
-                    const tables = this.editData ? (this.editData.config.dataSrcParams.table || []) : [];
-                    this.oracleValue.tables = JSON.stringify(rst) === '{}' ? [] : [...tables, ...rst];
+                    let finalTables = [];
+                    if( JSON.stringify(rst) !== '{}' ){
+                        const tables = this.editData ? (this.editData.config.dataSrcParams.table || []) : [];
+                        finalTables = [...rst];
+                        tables.forEach(item => {
+                            if(!finalTables.includes(item)){
+                                finalTables.unshift(item);
+                            }
+                        });
+
+
+                    }
+
+                    this.oracleValue.tables = finalTables;
                 }).catch(() => this.table_loading = false);
             }
         },
